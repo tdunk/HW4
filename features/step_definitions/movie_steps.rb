@@ -55,23 +55,47 @@ Given /the following movies have been added to RottenPotatoes:/ do |movies_table
     # The keys will be the table headers and the values will be the row contents.
     # You should arrange to add that movie to the database here.
     # You can add the entries directly to the databasse with ActiveRecord methodsQ
+    if !Movie.exists? movie
+      Movie.create! movie
+    end
   end
-  flunk "Unimplemented"
 end
 
 When /^I have opted to see movies rated: "(.*?)"$/ do |arg1|
   # HINT: use String#split to split up the rating_list, then
   # iterate over the ratings and check/uncheck the ratings
   # using the appropriate Capybara command(s)
-  flunk "Unimplemented"
+  uncheck('ratings_G')
+  uncheck('ratings_PG')
+  uncheck('ratings_PG-13')
+  uncheck('ratings_R')
+  
+  arg1.split(',').each do |rating|
+  	rating = rating.strip
+  	if rating == 'G'
+  	  check('ratings_G')
+  	elsif rating == 'PG'
+  	  check('ratings_PG')
+  	elsif rating == 'PG-13'
+  	  check('ratings_PG-13')
+  	elsif rating == 'R'
+  	  check('ratings_R')
+  	end
+  end
+  click_button('ratings_submit')
 end
 
 Then /^I should see only movies rated "(.*?)"$/ do |arg1|
-  flunk "Unimplemented" 
+	rows = 0
+	arg1.split(',').each do |rating|
+	  rating = rating.strip
+	  rows += Movie.where(:rating => rating).count
+  end
+  all('tbody').first.all('tr').count.should == rows
 end
 
 Then /^I should see all of the movies$/ do
-  flunk "Unimplemented"
+  all('tbody').first.all('tr').count.should == Movie.all.count
 end
 
 
