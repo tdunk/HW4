@@ -98,5 +98,22 @@ Then /^I should see all of the movies$/ do
   all('tbody').first.all('tr').count.should == Movie.all.count
 end
 
+When /^I have opted to sort alphabetically$/ do
+  click_link('title_header')
+end
+
+Then /^I should see "(.*?)" before "(.*?)"$/ do |first_movie,second_movie|
+  body = page.body
+  body.index(first_movie).should be < body.index(second_movie)
+end
+
+When /^I have decided to sort movies in increasing order of release date$/ do
+  click_link('release_date_header')
+end
+
+Then /^I should see "(.*$)" before "(.*$)"$/ do |first_movie,second_movie|
+  body = page.body
+  body.index(first_movie).should be < body.index(second_movie)
+end
 
 
