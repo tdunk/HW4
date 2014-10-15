@@ -72,15 +72,7 @@ When /^I have opted to see movies rated: "(.*?)"$/ do |arg1|
   
   arg1.split(',').each do |rating|
   	rating = rating.strip
-  	if rating == 'G'
-  	  check('ratings_G')
-  	elsif rating == 'PG'
-  	  check('ratings_PG')
-  	elsif rating == 'PG-13'
-  	  check('ratings_PG-13')
-  	elsif rating == 'R'
-  	  check('ratings_R')
-  	end
+  	check("ratings_#{rating}")
   end
   click_button('ratings_submit')
 end
